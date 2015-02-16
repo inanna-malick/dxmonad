@@ -17,9 +17,6 @@ RUN apt-get install -y xz-utils file locales dbus-x11 pulseaudio dmz-cursor-them
       libgl1-mesa-glx libgl1-mesa-dri
 
 ADD scripts /scripts
-#can skip docker, what I need is docker.io. leaving this here to avoid rebuild
-RUN apt-get -y install rxvt-unicode mcrypt docker
-
 
 RUN adduser dev
 RUN echo dev:dev | chpasswd
@@ -31,23 +28,7 @@ ENV PULSE_SERVER /run/pulse/native
 WORKDIR /home/dev
 ENV HOME /home/dev
 
-ADD dotfiles/bash_profile /home/dev/.bash_profile
-ADD dotfiles/gitconfig /home/dev/.gitconfig
-ADD dotfiles/Xresources /home/dev/.Xresources
 
-
-ADD xmonad /home/dev/.xmonad
-RUN chmod 777 /home/dev/.xmonad/xmonad.hs
-
-# get sbt via non-repo non-shitty method
-# care of https://github.com/paulp/sbt-extras
-# todo: put maven cache in shared data dir
-RUN curl -s https://raw.githubusercontent.com/paulp/sbt-extras/master/sbt > /home/dev/bin/sbt \
-     && chmod 0755 /home/dev/bin/sbt
-
-
-ADD start /start
-RUN chmod 755 /start
 
 # Create a shared data volume
 # We need to create an empty file, otherwise the volume will
@@ -58,18 +39,27 @@ RUN touch /var/shared/placeholder
 RUN chown -R dev:dev /var/shared
 VOLUME /var/shared
 
+RUN apt-get -y install vim-gnome vim docker.io xclip xterm
 
-# get spf13 vim config installed
-RUN apt-get -y install vim docker.io
+#install spf-13
 RUN curl https://j.mp/spf13-vim3 -L > spf13-vim.sh && sh spf13-vim.sh
 
+#these are always last, because any change to the dotfiles requires rerunning all later steps
+ADD dotfiles/bash_profile /home/dev/.bash_profile
+ADD dotfiles/gitconfig /home/dev/.gitconfig
+ADD dotfiles/Xresources /home/dev/.Xresources
 
-RUN apt-get -y install vim-gnome
-RUN apt-get -y install xclip
+ADD xmonad /home/dev/.xmonad
+RUN chmod 777 /home/dev/.xmonad/xmonad.hs
 
+#grant ownership of /home/dev to dev. run after all modifications to same
 RUN chown -R dev: /home/dev
-USER dev
 
+ADD start /start
+RUN chmod 755 /start
+
+
+USER dev
 ENTRYPOINT ["/start"]
 
 
