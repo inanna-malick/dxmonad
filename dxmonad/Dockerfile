@@ -52,12 +52,19 @@ ADD dotfiles/Xresources /home/dev/.Xresources
 ADD xmonad /home/dev/.xmonad
 RUN chmod 777 /home/dev/.xmonad/xmonad.hs
 
+RUN apt-get -y install network-manager network-manager-gnome
+
 #grant ownership of /home/dev to dev. run after all modifications to same
 RUN chown -R dev: /home/dev
+
+
 
 ADD start /start
 RUN chmod 755 /start
 
+# ENV LC_ALL en_US.UTF-8
+ENV LANG en_US.UTF-8
+ENV LANGUAGE en_US.UTF-8
 
 USER dev
 ENTRYPOINT ["/start"]
