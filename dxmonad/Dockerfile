@@ -33,6 +33,7 @@ ENV HOME /home/dev
 
 ADD dotfiles/bash_profile /home/dev/.bash_profile
 ADD dotfiles/gitconfig /home/dev/.gitconfig
+ADD dotfiles/Xresources /home/dev/.Xresources
 
 
 ADD xmonad /home/dev/.xmonad
@@ -44,7 +45,6 @@ RUN chmod 777 /home/dev/.xmonad/xmonad.hs
 RUN curl -s https://raw.githubusercontent.com/paulp/sbt-extras/master/sbt > /home/dev/bin/sbt \
      && chmod 0755 /home/dev/bin/sbt
 
-RUN chown -R dev: /home/dev
 
 ADD start /start
 RUN chmod 755 /start
@@ -67,6 +67,7 @@ RUN curl https://j.mp/spf13-vim3 -L > spf13-vim.sh && sh spf13-vim.sh
 RUN apt-get -y install vim-gnome
 RUN apt-get -y install xclip
 
+RUN chown -R dev: /home/dev
 USER dev
 
 ENTRYPOINT ["/start"]
