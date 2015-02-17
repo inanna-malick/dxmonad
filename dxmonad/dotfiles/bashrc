@@ -116,8 +116,6 @@ fi
 # pkinsky-added after this line
 alias anchor='ssh pkinsky@172.17.42.1'
 
+alias d='docker'
 
-alias rig='docker run -it -v /var/run/docker.sock:/var/run/docker.sock pkinsky/rig'
-
-
-
+alias rig='docker run -it --volumes-from maersk -v /var/run/docker.sock:/var/run/docker.sock pkinsky/rig'

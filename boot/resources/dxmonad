@@ -5,6 +5,7 @@ PATH=/usr/sbin:/usr/bin:/sbin:/bin:/usr/local/bin
 USER_UID=$(id -u)
 USER_GID=$(id -g)
 
+
 echo "starting dockerui"
 dockerui
 
@@ -12,20 +13,35 @@ echo "starting maersk"
 maersk
 
 
-docker kill dxmonad
-docker rm   dxmonad
-echo "Starting dxmonad..."
-docker run \
-    --name dxmonad \
-    --volumes-from maersk \
-    --link dockerui:dockerui \
-    --env USER_UID=${USER_UID} \
-    --env USER_GID=${USER_GID} \
-    --env DISPLAY=${DISPLAY} \
-    --volume=/home/pkinsky/.mozilla:/home/dev/.mozilla \
-    --volume=/home/pkinsky/.ssh:/home/dev/.ssh \
-    --volume=/home/pkinsky/dxmonad:/home/dev/dxmonad \
-    --volume=/var/run/docker.sock:/var/run/docker.sock \
-    --volume=/tmp/.X11-unix:/tmp/.X11-unix \
-    --volume=/run/user/${USER_UID}/pulse:/run/pulse \
-    pkinsky/dxmonad:latest
+dxmonad_up() {
+    NAME=$1
+    RUNWITH=$2
+    docker run \
+        --name $NAME \
+        --volumes-from maersk \
+        --link dockerui:dockerui \
+        --env USER_UID=${USER_UID} \
+        --env USER_GID=${USER_GID} \
+        --env DISPLAY=${DISPLAY} \
+        --volume=/home/pkinsky/.mozilla:/home/dev/.mozilla \
+        --volume=/home/pkinsky/.ssh:/home/dev/.ssh \
+        --volume=/home/pkinsky/dxmonad:/home/dev/dxmonad \
+        --volume=/var/run/docker.sock:/var/run/docker.sock \
+        --volume=/tmp/.X11-unix:/tmp/.X11-unix \
+        --volume=/run/user/${USER_UID}/pulse:/run/pulse \
+        pkinsky/dxmonad:latest $RUNWITH
+}
+
+
+if [ "$1" == "test" ]; then
+    docker kill dxmonad-test
+    docker rm   dxmonad-test
+    echo "Bring up dxmonad-test"
+    dxmonad_up  dxmonad-test "xmonad --recompile"
+    echo "done recompiling"
+else
+    docker kill dxmonad
+    docker rm   dxmonad
+    echo "Starting dxmonad..."
+    dxmonad_up  dxmonad
+fi
