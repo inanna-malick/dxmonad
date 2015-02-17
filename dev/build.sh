@@ -1,1 +1,1 @@
-docker build -t pkinsky/xterm .
+docker build -t pkinsky/dev .
