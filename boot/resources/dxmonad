@@ -11,12 +11,8 @@ else
   USER_UID=$(id -u)
   USER_GID=$(id -g)
 
-  docker stop dockerui || true
-  docker kill dockerui || true
-  docker run -d \
-    --name dockerui \
-    --volume=/var/run/docker.sock:/var/run/docker.sock \
-    dockerui/dockerui
+
+  dockerui
 
   echo "Starting ${prog}..."
   docker run \

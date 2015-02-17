@@ -61,7 +61,7 @@ ENV PULSE_SERVER /run/pulse/native
 
 
 #add a bunch of dotfiles
-ADD dotfiles/bash_profile /home/dev/.bash_profile
+ADD dotfiles/bashrc /home/dev/.bashrc
 ADD dotfiles/gitconfig /home/dev/.gitconfig
 ADD dotfiles/Xresources /home/dev/.Xresources
 ADD xmonad /home/dev/.xmonad

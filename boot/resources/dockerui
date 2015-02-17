@@ -1,0 +1,11 @@
+#!/bin/bash
+
+PATH=/usr/sbin:/usr/bin:/sbin:/bin
+
+docker stop dockerui || true
+docker kill dockerui || true
+docker rm   dockerui || true
+docker run -d \
+  --name dockerui \
+  --volume=/var/run/docker.sock:/var/run/docker.sock \
+  dockerui/dockerui

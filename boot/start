@@ -12,6 +12,8 @@ case "$1" in
     cp ~/resources/custom_xmonad_badge.png /target/share/unity-greeter/
     echo "4. copy dxmonad to /usr/local/bin/"
     install -m 0755 /resources/dxmonad /target/bin/
+    echo "4. copy dockerui to /usr/local/bin/"
+    install -m 0755 /resources/dockerui /target/bin/
     ;;
   uninstall)
     # todo
