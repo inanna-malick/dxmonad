@@ -68,6 +68,5 @@ case "$1" in
 
     # setup
     exec xmonad
-    tail -f ~/.xmonad/xmonad.errors
     ;;
 esac
