@@ -4,6 +4,7 @@
 -}
 
 import XMonad
+import XMonad.Actions.UpdatePointer
 import XMonad.Hooks.SetWMName
 import XMonad.Layout.Grid
 import XMonad.Layout.ResizableTile
@@ -327,15 +328,17 @@ main = do
   , manageHook = manageHook defaultConfig
       <+> composeAll myManagementHooks
       <+> manageDocks
-  , logHook = takeTopFocus <+> dynamicLogWithPP xmobarPP {
-      ppOutput = hPutStrLn xmproc
-      , ppTitle = xmobarColor myTitleColor "" . shorten myTitleLength
-      , ppCurrent = xmobarColor myCurrentWSColor ""
-        . wrap myCurrentWSLeft myCurrentWSRight
-      , ppVisible = xmobarColor myVisibleWSColor ""
-        . wrap myVisibleWSLeft myVisibleWSRight
-      , ppUrgent = xmobarColor myUrgentWSColor ""
-        . wrap myUrgentWSLeft myUrgentWSRight
-    }
+  , logHook = logHook xmproc
   }
     `additionalKeys` myKeys
+ where center = Relative 0.5 0.5
+       logHook xmproc = takeTopFocus <+> dynamicLogWithPP xmobarPP {
+         ppOutput = hPutStrLn xmproc
+         , ppTitle = xmobarColor myTitleColor "" . shorten myTitleLength
+         , ppCurrent = xmobarColor myCurrentWSColor ""
+           . wrap myCurrentWSLeft myCurrentWSRight
+         , ppVisible = xmobarColor myVisibleWSColor ""
+           . wrap myVisibleWSLeft myVisibleWSRight
+         , ppUrgent = xmobarColor myUrgentWSColor ""
+           . wrap myUrgentWSLeft myUrgentWSRight
+       } >> (updatePointer center)

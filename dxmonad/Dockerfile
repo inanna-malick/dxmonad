@@ -21,8 +21,11 @@ ENV PULSE_SERVER /run/pulse/native
 ADD dotfiles/bashrc /home/dev/.bashrc
 ADD dotfiles/gitconfig /home/dev/.gitconfig
 ADD dotfiles/Xresources /home/dev/.Xresources
+
 ADD xmonad /home/dev/.xmonad
 RUN chmod 777 /home/dev/.xmonad/xmonad.hs
+# ensure xmonad.hs can compile
+RUN xmonad --recompile
 
 #grant ownership of /home/dev to dev. run after all modifications to same
 RUN chown -R dev: /home/dev
@@ -30,7 +33,6 @@ RUN chown -R dev: /home/dev
 #add start script entrypoint
 ADD start /start
 RUN chmod 755 /start
-
 
 USER dev
 CMD ["/start"]
