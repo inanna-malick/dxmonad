@@ -14,6 +14,8 @@ RUN apt-get -y install xmonad libghc-xmonad-dev libghc-xmonad-contrib-dev \
       network-manager-gnome xterm haskell-platform
 
 
+RUN apt-get -y install mysql-client
+
 ENV PULSE_SERVER /run/pulse/native
 
 
@@ -35,7 +37,6 @@ RUN chown -R dev: /home/dev
 ADD start /start
 RUN chmod 755 /start
 
-RUN apt-get -y install mysql-client
 
 USER dev
 CMD ["/start"]

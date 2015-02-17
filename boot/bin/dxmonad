@@ -11,21 +11,18 @@ dx-mysql
 echo "starting dockerui"
 dockerui
 
-echo "starting maersk"
-maersk
-
 
 dxmonad_up() {
     NAME=$1
     RUNWITH=$2
     docker run \
         --name $NAME \
-        --volumes-from maersk \
         --link dockerui:intel\
         --link dx-mysql:mysql \
         --env USER_UID=${USER_UID} \
         --env USER_GID=${USER_GID} \
         --env DISPLAY=${DISPLAY} \
+        --volume=/home/pkinsky/maersk:/maersk \
         --volume=/home/pkinsky/.mozilla:/home/dev/.mozilla \
         --volume=/home/pkinsky/.ssh:/home/dev/.ssh \
         --volume=/home/pkinsky/dxmonad:/home/dev/dxmonad \
