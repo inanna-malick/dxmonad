@@ -12,11 +12,18 @@ else
   USER_GID=$(id -g)
 
 
+  docker run -d \
+    --name dockerui \
+    --volume=/var/run/docker.sock:/var/run/docker.sock \
+    dockerui/dockerui
+
   echo "Starting ${prog}..."
   docker run \
+    --link dockerui:dockerui \
     --env USER_UID=${USER_UID} \
     --env USER_GID=${USER_GID} \
     --env DISPLAY=${DISPLAY} \
+    --volume=/home/pkinsky/.mozilla:/home/dev/.mozilla \
     --volume=/home/pkinsky/.ssh:/home/dev/.ssh \
     --volume=/home/pkinsky/dxmonad:/home/dev/dxmonad \
     --volume=/var/run/docker.sock:/var/run/docker.sock \

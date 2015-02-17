@@ -4,14 +4,14 @@ set -e
 case "$1" in
   install)
     # 0. docker run --rm -v /usr/local/bin:/target/bin -v /usr/share:/target/share pkinsky/boot install
-    # 1. backup xmonad.desktop if it exists
+    echo "1. backup xmonad.desktop if it exists"
     mv /target/share/xsessions/xmonad.desktop /target/share/xsessions/xmonad.desktop.old || true
-    # 2. copy in new xmonad.desktop to /usr/share/xsessions
+    echo "2. copy in new xmonad.desktop to /usr/share/xsessions/"
     cp /resources/xmonad.desktop /target/share/xsessions/
-    # 3. copy cool png badge to /usr/share/unity-greeter
+    echo "3. copy cool png badge to /usr/share/unity-greeter/"
     cp ~/resources/custom_xmonad_badge.png /target/share/unity-greeter/
-    # 4. copy executable
-    install -m 0755 /resources/dxmonad /target/bin
+    echo "4. copy dxmonad to /usr/local/bin/"
+    install -m 0755 /resources/dxmonad /target/bin/
     ;;
   uninstall)
     # todo

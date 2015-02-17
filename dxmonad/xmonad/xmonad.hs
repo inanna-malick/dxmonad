@@ -30,9 +30,9 @@ import Data.Ratio ((%))
 -}
 
 myModMask            = mod1Mask       -- changes the mod key to "super"
-myFocusedBorderColor = "#ff0000"      -- color of focused border
-myNormalBorderColor  = "#cccccc"      -- color of inactive border
-myBorderWidth        = 1              -- width of border around windows
+myFocusedBorderColor = "#33CCFF"      -- color of focused border
+myNormalBorderColor  = "#FFFFFF"      -- color of inactive border
+myBorderWidth        = 3              -- width of border around windows
 myTerminal           = "xterm"        -- which terminal software to use
 myIMRosterTitle      = "Buddy List"   -- title of roster on IM workspace
                                       -- use "Buddy List" for Pidgin, but
@@ -44,11 +44,11 @@ myIMRosterTitle      = "Buddy List"   -- title of roster on IM workspace
   of text which xmonad is sending to xmobar via the DynamicLog hook.
 -}
 
-myTitleColor     = "#eeeeee"  -- color of window title
+myTitleColor     = "#000000"  -- color of window title
 myTitleLength    = 80         -- truncate window title to this length
-myCurrentWSColor = "#e6744c"  -- color of active workspace
-myVisibleWSColor = "#c185a7"  -- color of inactive workspace
-myUrgentWSColor  = "#cc0000"  -- color of workspace with 'urgent' window
+myCurrentWSColor = "#000000"  -- color of active workspace
+myVisibleWSColor = "#000000"  -- color of inactive workspace
+myUrgentWSColor  = "#000000"  -- color of workspace with 'urgent' window
 myCurrentWSLeft  = "["        -- wrap active workspace with these
 myCurrentWSRight = "]"
 myVisibleWSLeft  = "("        -- wrap inactive workspace with these
@@ -247,16 +247,8 @@ myKeyBindings =
 
 myManagementHooks :: [ManageHook]
 myManagementHooks = [
-  resource =? "synapse" --> doIgnore
   , resource =? "stalonetray" --> doIgnore
   , className =? "rdesktop" --> doFloat
---  , (className =? "Komodo IDE") --> doF (W.shift "5:Dev")
-  , (className =? "Komodo IDE" <&&> resource =? "Komodo_find2") --> doFloat
-  , (className =? "Komodo IDE" <&&> resource =? "Komodo_gotofile") --> doFloat
-  , (className =? "Komodo IDE" <&&> resource =? "Toplevel") --> doFloat
-  , (className =? "Empathy") --> doF (W.shift "7:Chat")
-  , (className =? "Pidgin") --> doF (W.shift "7:Chat")
-  , (className =? "Gimp-2.8") --> doF (W.shift "9:Pix")
   ]
 
 
@@ -291,29 +283,24 @@ numKeys =
     , xK_0, xK_minus, xK_equal
   ]
 
--- Here, some magic occurs that I once grokked but has since
--- fallen out of my head. Essentially what is happening is
--- that we are telling xmonad how to navigate workspaces,
--- how to send windows to different workspaces,
--- and what keys to use to change which monitor is focused.
+
 myKeys = myKeyBindings ++
-  [
+  [ -- for every combo of all (workspace key (numpad/top row both) as k), workspace as i) 
+    -- register bindings k + mod + shift -> shift (move current focused element to i)
+    --                   k + mod + 0 -> set focus to the given, with some weird extras
     ((m .|. myModMask, k), windows $ f i)
-       | (i, k) <- zip myWorkspaces numPadKeys
+       | (i, k) <- zip myWorkspaces numPadKeys ++ zip myWorkspaces numKeys
        , (f, m) <- [(W.greedyView, 0), (W.shift, shiftMask)]
   ] ++
-  [
-    ((m .|. myModMask, k), windows $ f i)
-       | (i, k) <- zip myWorkspaces numKeys
-       , (f, m) <- [(W.greedyView, 0), (W.shift, shiftMask)]
-  ] ++
-  M.toList (planeKeys myModMask (Lines 4) Finite) ++
-  [
-    ((m .|. myModMask, key), screenWorkspace sc
-      >>= flip whenJust (windows . f))
-      | (key, sc) <- zip [xK_w, xK_e, xK_r] [1,0,2]
-      , (f, m) <- [(W.view, 0), (W.shift, shiftMask)]
-  ]
+  {- notes
+  this is all from the Planes contrib module, controls moving around in plane of workspaces
+  (Lines 4) -> numpad 3x3 plus [0, extr1, extr2] as bottom row 
+               (lines # is just divisor of workspaces, don't require 4x4 square)
+  Finite -> stop at edge of workspace plane, as opposed to Circular
+  -}
+  M.toList (planeKeys myModMask (Lines 4) Finite)
+
+
 
 
 {-

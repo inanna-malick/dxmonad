@@ -4,6 +4,7 @@ FROM ubuntu:14.04
 RUN apt-get -y install software-properties-common
 RUN sudo apt-add-repository ppa:synapse-core/testing
 RUN apt-get update
+
 # install base
 RUN apt-get -y install \
       wget git curl  firefox xz-utils file locales dbus-x11 \
@@ -35,8 +36,11 @@ RUN curl https://j.mp/spf13-vim3 -L > spf13-vim.sh && sh spf13-vim.sh
 
 
 # get cabal
-RUN wget -O cabal-install.tar.gz https://www.haskell.org/cabal/release/cabal-install-1.22.0.0/cabal-1.22.0.0-i386-unknown-linux.tar.gz &&\
-     tar -zxf cabal-install.tar.gz
+RUN apt-get -y install haskell-platform
+#RUN wget https://www.haskell/release/cabal-install-1.22.0.0/cabal-instal.tar.gz && \
+#    tar -zxf cabal-install-1.22.0.0.tar.gz && \
+#    cd cd cabal-install-1.22.0 && \
+#    sh bootstrap.shared
 
 # Create a shared data volume
 # We need to create an empty file, otherwise the volume will
