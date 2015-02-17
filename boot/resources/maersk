@@ -1,0 +1,12 @@
+#!/bin/bash
+
+PATH=/usr/sbin:/usr/bin:/sbin:/bin:/usr/local/bin
+
+if [ "$1" == "r" ]; then
+  docker stop maersk || true
+  docker kill maersk || true
+  docker rm   maersk || true
+fi
+
+docker run -d --name maersk pkinsky/maersk || docker start maersk
+

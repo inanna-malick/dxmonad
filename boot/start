@@ -14,6 +14,8 @@ case "$1" in
     install -m 0755 /resources/dxmonad /target/bin/
     echo "4. copy dockerui to /usr/local/bin/"
     install -m 0755 /resources/dockerui /target/bin/
+    echo "4. copy maersk to /usr/local/bin/"
+    install -m 0755 /resources/maersk /target/bin/
     ;;
   uninstall)
     # todo

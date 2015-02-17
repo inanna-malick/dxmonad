@@ -115,3 +115,9 @@ fi
 
 # pkinsky-added after this line
 alias anchor='ssh pkinsky@172.17.42.1'
+
+
+alias rig='docker run -it -v /var/run/docker.sock:/var/run/docker.sock pkinsky/rig'
+
+
+

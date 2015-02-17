@@ -6,11 +6,18 @@ USER_UID=$(id -u)
 USER_GID=$(id -g)
 
 echo "starting dockerui"
-
 dockerui
 
+echo "starting maersk"
+maersk
+
+
+docker kill dxmonad
+docker rm   dxmonad
 echo "Starting dxmonad..."
 docker run \
+    --name dxmonad \
+    --volumes-from maersk \
     --link dockerui:dockerui \
     --env USER_UID=${USER_UID} \
     --env USER_GID=${USER_GID} \
