@@ -109,13 +109,12 @@ if ! shopt -oq posix; then
   if [ -f /usr/share/bash-completion/bash_completion ]; then
     . /usr/share/bash-completion/bash_completion
   elif [ -f /etc/bash_completion ]; then
-    . /etc/bash_completion
+    . /etc/bash_completion.d/
   fi
 fi
 
 # pkinsky-added after this line
 alias anchor='ssh pkinsky@172.17.42.1'
+alias dx-recompile='ssh pkinsky@172.17.42.1 dxmonad test'
 
 alias d='docker'
-
-alias rig='docker run -it --volumes-from maersk -v /var/run/docker.sock:/var/run/docker.sock pkinsky/rig'

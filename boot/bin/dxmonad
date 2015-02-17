@@ -5,6 +5,8 @@ PATH=/usr/sbin:/usr/bin:/sbin:/bin:/usr/local/bin
 USER_UID=$(id -u)
 USER_GID=$(id -g)
 
+echo "starting dx-mysql"
+dx-mysql
 
 echo "starting dockerui"
 dockerui
@@ -19,7 +21,8 @@ dxmonad_up() {
     docker run \
         --name $NAME \
         --volumes-from maersk \
-        --link dockerui:dockerui \
+        --link dockerui:intel\
+        --link dx-mysql:mysql \
         --env USER_UID=${USER_UID} \
         --env USER_GID=${USER_GID} \
         --env DISPLAY=${DISPLAY} \

@@ -11,11 +11,13 @@ case "$1" in
     echo "3. copy cool png badge to /usr/share/unity-greeter/"
     cp ~/resources/custom_xmonad_badge.png /target/share/unity-greeter/
     echo "4. copy dxmonad to /usr/local/bin/"
-    install -m 0755 /resources/dxmonad /target/bin/
-    echo "4. copy dockerui to /usr/local/bin/"
-    install -m 0755 /resources/dockerui /target/bin/
-    echo "4. copy maersk to /usr/local/bin/"
-    install -m 0755 /resources/maersk /target/bin/
+    install -m 0755 /resources/bin/dxmonad /target/bin/
+    echo "5. copy dockerui to /usr/local/bin/"
+    install -m 0755 /resources/bin/dockerui /target/bin/
+    echo "6. copy maersk to /usr/local/bin/"
+    install -m 0755 /resources/bin/maersk /target/bin/
+    echo "7. copy dx-mysql to /usr/local/bin/"
+    install -m 0755 /resources/bin/dx-mysql /target/bin/
     ;;
   uninstall)
     # todo

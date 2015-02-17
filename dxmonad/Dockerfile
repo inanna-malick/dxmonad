@@ -21,6 +21,7 @@ ENV PULSE_SERVER /run/pulse/native
 ADD dotfiles/bashrc /home/dev/.bashrc
 ADD dotfiles/gitconfig /home/dev/.gitconfig
 ADD dotfiles/Xresources /home/dev/.Xresources
+ADD bin /home/dev/bin
 
 ADD xmonad /home/dev/.xmonad
 RUN chmod 777 /home/dev/.xmonad/xmonad.hs
@@ -33,6 +34,8 @@ RUN chown -R dev: /home/dev
 #add start script entrypoint
 ADD start /start
 RUN chmod 755 /start
+
+RUN apt-get -y install mysql-client
 
 USER dev
 CMD ["/start"]
