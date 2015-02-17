@@ -4,16 +4,20 @@ FROM ubuntu:14.04
 RUN apt-get -y install software-properties-common
 RUN sudo apt-add-repository ppa:synapse-core/testing
 RUN apt-get update
+# install base
 RUN apt-get -y install \
-      wget git curl xmonad libghc-xmonad-dev libghc-xmonad-contrib-dev \
-      xmobar xcompmgr nitrogen stalonetray moreutils consolekit synapse \
-      ssh-askpass-gnome thunar terminator remmina firefox \
-      xz-utils file locales dbus-x11 pulseaudio dmz-cursor-theme \
-      fonts-dejavu fonts-liberation hicolor-icon-theme \
-      libcanberra-gtk3-0 libcanberra-gtk-module libcanberra-gtk3-module \
-      libasound2 libgtk2.0-0 libdbus-glib-1-2 libxt6 libexif12 \
-      libgl1-mesa-glx libgl1-mesa-dri vim-gnome vim docker.io xclip \
-      network-manager network-manager-gnome xterm
+      wget git curl  firefox xz-utils file locales dbus-x11 \
+      pulseaudio dmz-cursor-theme fonts-dejavu fonts-liberation \
+      hicolor-icon-theme libcanberra-gtk3-0 libcanberra-gtk-module \
+      libcanberra-gtk3-module libasound2 libgtk2.0-0 libdbus-glib-1-2 \
+      libxt6 libexif12 libgl1-mesa-glx libgl1-mesa-dri vim-gnome vim \
+      docker.io xclip xterm
+
+#install xmonad utils
+RUN apt-get -y install xmonad libghc-xmonad-dev libghc-xmonad-contrib-dev \
+      xmobar xcompmgr nitrogen stalonetray moreutils consolekit dmenu \
+      ssh-askpass-gnome thunar terminator remmina network-manager \
+      network-manager-gnome xterm
 
 # set up user
 RUN adduser dev
@@ -24,9 +28,15 @@ WORKDIR /home/dev
 ENV HOME /home/dev
 
 
-#install spf-13 (running after user setup)
+# now for the non-package-manager install block
+
+# get spf13
 RUN curl https://j.mp/spf13-vim3 -L > spf13-vim.sh && sh spf13-vim.sh
 
+
+# get cabal
+RUN wget -O cabal-install.tar.gz https://www.haskell.org/cabal/release/cabal-install-1.22.0.0/cabal-1.22.0.0-i386-unknown-linux.tar.gz &&\
+     tar -zxf cabal-install.tar.gz
 
 # Create a shared data volume
 # We need to create an empty file, otherwise the volume will
@@ -50,6 +60,7 @@ ENV PULSE_SERVER /run/pulse/native
 ADD dotfiles/bash_profile /home/dev/.bash_profile
 ADD dotfiles/gitconfig /home/dev/.gitconfig
 ADD dotfiles/Xresources /home/dev/.Xresources
+#ADD dotfiles/stalonetrayrc /home/dev/.stalonetrayrc
 ADD xmonad /home/dev/.xmonad
 RUN chmod 777 /home/dev/.xmonad/xmonad.hs
 
