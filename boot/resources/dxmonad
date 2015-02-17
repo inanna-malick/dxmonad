@@ -18,16 +18,6 @@ else
     --volume=/var/run/docker.sock:/var/run/docker.sock \
     dockerui/dockerui
 
-  docker stop anchor || true
-  docker kill anchor || true
-    # deliberately using /./ to get around bind-root prohibition
-  docker run -d \
-    --name anchor \
-    --volume=/var/run/docker.sock:/var/run/docker.sock \
-    --volume=/./:/anchor/ \
-    pkinsky/anchor
-
-
   echo "Starting ${prog}..."
   docker run \
     --link dockerui:dockerui \

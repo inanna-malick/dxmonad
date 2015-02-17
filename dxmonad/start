@@ -10,6 +10,10 @@ case "$1" in
     # load X resources
     xrdb -merge .Xresources
 
+
+    # without this running docker requires privileges
+    chown dev /var/run/docker.sock
+
     # Start compositing to support transparency. You can omit this
     # if you prefer not to use any transparency, but it is likely to cause
     # ugly black fringing with some programs such as synapse that expect
