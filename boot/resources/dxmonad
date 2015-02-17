@@ -11,15 +11,27 @@ else
   USER_UID=$(id -u)
   USER_GID=$(id -g)
 
-
+  docker stop dockerui || true
+  docker kill dockerui || true
   docker run -d \
     --name dockerui \
     --volume=/var/run/docker.sock:/var/run/docker.sock \
     dockerui/dockerui
 
+  docker stop anchor || true
+  docker kill anchor || true
+    # deliberately using /./ to get around bind-root prohibition
+  docker run -d \
+    --name anchor \
+    --volume=/var/run/docker.sock:/var/run/docker.sock \
+    --volume=/./:/anchor/ \
+    pkinsky/anchor
+
+
   echo "Starting ${prog}..."
   docker run \
     --link dockerui:dockerui \
+    --link anchor:anchor\
     --env USER_UID=${USER_UID} \
     --env USER_GID=${USER_GID} \
     --env DISPLAY=${DISPLAY} \

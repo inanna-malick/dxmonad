@@ -247,7 +247,7 @@ myKeyBindings =
 
 myManagementHooks :: [ManageHook]
 myManagementHooks = [
-  , resource =? "stalonetray" --> doIgnore
+  resource =? "stalonetray" --> doIgnore
   , className =? "rdesktop" --> doFloat
   ]
 

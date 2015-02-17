@@ -64,7 +64,6 @@ ENV PULSE_SERVER /run/pulse/native
 ADD dotfiles/bash_profile /home/dev/.bash_profile
 ADD dotfiles/gitconfig /home/dev/.gitconfig
 ADD dotfiles/Xresources /home/dev/.Xresources
-ADD dotfiles/stalonetrayrc /home/dev/.stalonetrayrc
 ADD xmonad /home/dev/.xmonad
 RUN chmod 777 /home/dev/.xmonad/xmonad.hs
 
