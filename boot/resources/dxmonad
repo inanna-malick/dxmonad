@@ -1,23 +1,17 @@
 #!/bin/bash
 
-PATH=/usr/sbin:/usr/bin:/sbin:/bin
+PATH=/usr/sbin:/usr/bin:/sbin:/bin:/usr/local/bin
 
-prog=$(basename $0)
-exec=$(which $prog)
+USER_UID=$(id -u)
+USER_GID=$(id -g)
 
-if [ -n "${exec}" ]; then
-  exec ${exec} $@
-else
-  USER_UID=$(id -u)
-  USER_GID=$(id -g)
+echo "starting dockerui"
 
+dockerui
 
-  dockerui
-
-  echo "Starting ${prog}..."
-  docker run \
+echo "Starting dxmonad..."
+docker run \
     --link dockerui:dockerui \
-    --link anchor:anchor\
     --env USER_UID=${USER_UID} \
     --env USER_GID=${USER_GID} \
     --env DISPLAY=${DISPLAY} \
@@ -28,4 +22,3 @@ else
     --volume=/tmp/.X11-unix:/tmp/.X11-unix \
     --volume=/run/user/${USER_UID}/pulse:/run/pulse \
     pkinsky/dxmonad:latest
-fi
