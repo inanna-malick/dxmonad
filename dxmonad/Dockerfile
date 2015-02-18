@@ -43,6 +43,10 @@ RUN xmonad --recompile
 #grant ownership of /home/dev to dev. run after all modifications to same
 RUN chown -R dev: /home/dev
 
+RUN apt-get -y install notify-osd libnotify-bin
+
+RUN cabal install io-streams
+
 
 USER dev
 CMD ["/start"]

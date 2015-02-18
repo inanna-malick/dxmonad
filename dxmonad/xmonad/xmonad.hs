@@ -24,7 +24,20 @@ import XMonad.Hooks.ICCCMFocus
 import qualified XMonad.StackSet as W
 import qualified Data.Map as M
 import Data.Ratio ((%))
+import Data.ByteString (ByteString)
+import qualified Data.ByteString as S
+import System.IO.Streams (InputStream)
+import qualified System.IO.Streams as Streams
+import System.IO (Handle, hFlush)
 
+bUFSIZ = 32752
+
+upgradeReadOnlyHandle :: Handle -> IO (InputStream ByteString)
+upgradeReadOnlyHandle h = Streams.makeInputStream f
+  where
+    f = do
+        x <- S.hGetSome h bUFSIZ
+        return $! if S.null x then Nothing else Just x
 
 {-
   solarized colors
@@ -57,7 +70,7 @@ myModMask            = mod1Mask       -- changes the mod key to "super"
 myFocusedBorderColor = solarizedBlue  -- color of focused border
 myNormalBorderColor  = solarizedBlue  -- color of inactive border
 myBorderWidth        = 2              -- width of border around windows
-myTerminal           = "urxvt"        -- which terminal software to use
+myTerminal           = "xterm"        -- which terminal software to use
 myIMRosterTitle      = "Buddy List"   -- title of roster on IM workspace
                                       -- use "Buddy List" for Pidgin, but
                                       -- "Contact List" for Empathy
@@ -323,6 +336,8 @@ myKeys = myKeyBindings ++
   Finite -> stop at edge of workspace plane, as opposed to Circular
   -}
   M.toList (planeKeys myModMask (Lines 4) Finite)
+
+
 
 
 
