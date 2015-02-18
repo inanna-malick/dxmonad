@@ -25,16 +25,39 @@ import qualified XMonad.StackSet as W
 import qualified Data.Map as M
 import Data.Ratio ((%))
 
+
+{-
+  solarized colors
+-}
+
+solarizedBase03 = "#002b36"
+solarizedBase02 = "#073642"
+solarizedBase01 = "#586e75"
+solarizedBase00 = "#657b83"
+solarizedBase0 = "#839496"
+solarizedBase1 = "#93a1a1"
+solarizedBase2 = "#eee8d5"
+solarizedBase3 = "#fdf6e3"
+solarizedYellow = "#b58900"
+solarizedOrange = "#cb4b16"
+solarizedRed = "#dc322f"
+solarizedMagenta = "#d33682"
+solarizedViolet = "#6c71c4"
+solarizedBlue = "#268bd2"
+solarizedCyan = "#2aa198"
+solarizedGreen = "#859900"
+
+
 {-
   Xmonad configuration variables. These settings control some of the
   simpler parts of xmonad's behavior and are straightforward to tweak.
 -}
 
 myModMask            = mod1Mask       -- changes the mod key to "super"
-myFocusedBorderColor = "#33CCFF"      -- color of focused border
-myNormalBorderColor  = "#FFFFFF"      -- color of inactive border
-myBorderWidth        = 3              -- width of border around windows
-myTerminal           = "xterm"        -- which terminal software to use
+myFocusedBorderColor = solarizedBlue  -- color of focused border
+myNormalBorderColor  = solarizedBlue  -- color of inactive border
+myBorderWidth        = 2              -- width of border around windows
+myTerminal           = "urxvt"        -- which terminal software to use
 myIMRosterTitle      = "Buddy List"   -- title of roster on IM workspace
                                       -- use "Buddy List" for Pidgin, but
                                       -- "Contact List" for Empathy
