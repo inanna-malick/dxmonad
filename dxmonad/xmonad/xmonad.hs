@@ -24,20 +24,21 @@ import XMonad.Hooks.ICCCMFocus
 import qualified XMonad.StackSet as W
 import qualified Data.Map as M
 import Data.Ratio ((%))
+import System.IO.Streams.Handle (handleToInputStream)
 import Data.ByteString (ByteString)
+import Data.ByteString.Char8 (pack)
 import qualified Data.ByteString as S
-import System.IO.Streams (InputStream)
+import System.IO.Streams (InputStream, OutputStream)
 import qualified System.IO.Streams as Streams
-import System.IO (Handle, hFlush)
 
-bUFSIZ = 32752
+notify :: IO (OutputStream ByteString)
+notify = Streams.makeOutputStream $ \m -> case m of
+    Just bs -> safeSpawn "/usr/bin/notify-send" [show bs]
+    Nothing -> return ()
 
-upgradeReadOnlyHandle :: Handle -> IO (InputStream ByteString)
-upgradeReadOnlyHandle h = Streams.makeInputStream f
-  where
-    f = do
-        x <- S.hGetSome h bUFSIZ
-        return $! if S.null x then Nothing else Just x
+testSource :: IO (InputStream ByteString)
+testSource = Streams.fromList $ take 10 $ repeat $ pack "yolo"
+
 
 {-
   solarized colors
@@ -340,8 +341,6 @@ myKeys = myKeyBindings ++
 
 
 
-
-
 {-
   Here we actually stitch together all the configuration settings
   and run xmonad. We also spawn an instance of xmobar and pipe
@@ -350,6 +349,12 @@ myKeys = myKeyBindings ++
 
 main = do
   xmproc <- spawnPipe "xmobar ~/.xmonad/xmobarrc"
+  source <- testSource --this works fine-ish (test with throttled stream to be sure)
+  --this stops xmonad from working, b/c it's single-threaded, b/c x11 doesn't play nice with threads
+  --(stdin, stdout, stderr, h) <- Streams.runInteractiveProcess "/usr/bin/docker" ["events"] Nothing Nothing
+  --let source = stdout
+  sink <- notify
+  Streams.connect source sink
   xmonad $ withUrgencyHook NoUrgencyHook $ defaultConfig {
     focusedBorderColor = myFocusedBorderColor
   , normalBorderColor = myNormalBorderColor
