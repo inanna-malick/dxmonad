@@ -118,3 +118,4 @@ alias anchor='ssh pkinsky@172.17.42.1'
 alias dx-recompile='ssh pkinsky@172.17.42.1 dxmonad test'
 
 alias d='docker'
+alias vim='gvim'

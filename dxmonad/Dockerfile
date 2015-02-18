@@ -14,7 +14,7 @@ RUN apt-get -y install xmonad libghc-xmonad-dev libghc-xmonad-contrib-dev \
       network-manager-gnome xterm haskell-platform
 
 
-RUN apt-get -y install mysql-client
+RUN apt-get -y install mysql-client gnome-terminal dconf-cli
 
 ENV PULSE_SERVER /run/pulse/native
 
@@ -37,6 +37,10 @@ RUN chown -R dev: /home/dev
 ADD start /start
 RUN chmod 755 /start
 
+RUN cabal update
+RUN cabal install ghc-mod
+ENV PATH /home/dev/.cabal/bin:$PATH
+RUN ln -s /home/dev/.cabal/bin/ghc-mod /home/dev/.cabal/bin/ghcmod
 
 USER dev
 CMD ["/start"]
