@@ -1,0 +1,34 @@
+
+package: blaze-builder-0.3.3.4
+os: linux
+arch: x86_64
+compiler: ghc-7.6.3
+client: cabal-install-1.23.0.0
+dependencies: text-0.11.3.1 bytestring-0.10.0.2 base-4.6.0.1
+install-outcome: InstallOk
+docs-outcome: NotTried
+tests-outcome: NotTried
+
+package: io-streams-1.2.1.2
+os: linux
+arch: x86_64
+compiler: ghc-7.6.3
+client: cabal-install-1.23.0.0
+flags: -nointeractivetests
+dependencies: zlib-bindings-0.1.1.5 vector-0.10.0.1
+              transformers-0.3.0.0 time-1.4.0.1 text-0.11.3.1 process-1.1.0.2
+              primitive-0.5.0.1 network-2.4.1.2 bytestring-0.10.0.2
+              blaze-builder-0.3.3.4 base-4.6.0.1 attoparsec-0.10.4.0
+install-outcome: InstallOk
+docs-outcome: NotTried
+tests-outcome: NotTried
+
+package: zlib-bindings-0.1.1.5
+os: linux
+arch: x86_64
+compiler: ghc-7.6.3
+client: cabal-install-1.23.0.0
+dependencies: zlib-0.5.4.1 bytestring-0.10.0.2 base-4.6.0.1
+install-outcome: InstallOk
+docs-outcome: NotTried
+tests-outcome: NotTried

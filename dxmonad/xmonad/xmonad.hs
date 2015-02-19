@@ -24,21 +24,6 @@ import XMonad.Hooks.ICCCMFocus
 import qualified XMonad.StackSet as W
 import qualified Data.Map as M
 import Data.Ratio ((%))
-import System.IO.Streams.Handle (handleToInputStream)
-import Data.ByteString (ByteString)
-import Data.ByteString.Char8 (pack)
-import qualified Data.ByteString as S
-import System.IO.Streams (InputStream, OutputStream)
-import qualified System.IO.Streams as Streams
-
-notify :: IO (OutputStream ByteString)
-notify = Streams.makeOutputStream $ \m -> case m of
-    Just bs -> safeSpawn "/usr/bin/notify-send" [show bs]
-    Nothing -> return ()
-
-testSource :: IO (InputStream ByteString)
-testSource = Streams.fromList $ take 10 $ repeat $ pack "yolo"
-
 
 {-
   solarized colors
@@ -349,12 +334,6 @@ myKeys = myKeyBindings ++
 
 main = do
   xmproc <- spawnPipe "xmobar ~/.xmonad/xmobarrc"
-  source <- testSource --this works fine-ish (test with throttled stream to be sure)
-  --this stops xmonad from working, b/c it's single-threaded, b/c x11 doesn't play nice with threads
-  --(stdin, stdout, stderr, h) <- Streams.runInteractiveProcess "/usr/bin/docker" ["events"] Nothing Nothing
-  --let source = stdout
-  sink <- notify
-  Streams.connect source sink
   xmonad $ withUrgencyHook NoUrgencyHook $ defaultConfig {
     focusedBorderColor = myFocusedBorderColor
   , normalBorderColor = myNormalBorderColor
