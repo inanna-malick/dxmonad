@@ -9,7 +9,7 @@ case "$1" in
     echo "2. copy in new xmonad.desktop to /usr/share/xsessions/"
     cp /resources/xmonad.desktop /target/share/xsessions/
     echo "3. copy cool png badge to /usr/share/unity-greeter/"
-    cp ~/resources/custom_xmonad_badge.png /target/share/unity-greeter/
+    cp /resources/custom_xmonad_badge.png /target/share/unity-greeter/
     echo "4. copy dxmonad to /usr/local/bin/"
     install -m 0755 /resources/bin/dxmonad /target/bin/
     echo "5. copy dockerui to /usr/local/bin/"

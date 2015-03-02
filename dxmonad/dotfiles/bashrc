@@ -114,7 +114,7 @@ if ! shopt -oq posix; then
 fi
 
 # pkinsky-added after this line
-alias anchor='ssh pkinsky@172.17.42.1'
+alias anchor='ssh paul@172.17.42.1'
 alias dx-recompile='ssh pkinsky@172.17.42.1 dxmonad test'
 
 alias d='docker'

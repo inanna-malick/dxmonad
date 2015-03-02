@@ -1,15 +1,19 @@
 #!/bin/bash
+#set -e
+
+
+# todo: read home dir instead of hardcoding
 
 PATH=/usr/sbin:/usr/bin:/sbin:/bin:/usr/local/bin
 
 USER_UID=$(id -u)
 USER_GID=$(id -g)
 
-echo "starting dx-mysql"
-dx-mysql
+#echo "starting dx-mysql"
+#dx-mysql
 
-echo "starting dockerui"
-dockerui
+#echo "starting dockerui"
+#dockerui
 
 
 dxmonad_up() {
@@ -17,15 +21,14 @@ dxmonad_up() {
     RUNWITH=$2
     docker run \
         --name $NAME \
-        --link dockerui:intel\
-        --link dx-mysql:mysql \
         --env USER_UID=${USER_UID} \
         --env USER_GID=${USER_GID} \
         --env DISPLAY=${DISPLAY} \
-        --volume=/home/pkinsky/maersk:/maersk \
-        --volume=/home/pkinsky/.mozilla:/home/dev/.mozilla \
-        --volume=/home/pkinsky/.ssh:/home/dev/.ssh \
-        --volume=/home/pkinsky/dxmonad:/home/dev/dxmonad \
+        --volume=/home/paul/maersk:/maersk \
+        --volume=/home/paul/.mozilla:/home/dev/.mozilla \
+        --volume=/home/paul/.ssh:/home/dev/.ssh \
+        --volume=/home/paul/dxmonad:/home/dev/dxmonad \
+        --volume=/home/paul/work:/home/dev/work \
         --volume=/var/run/docker.sock:/var/run/docker.sock \
         --volume=/tmp/.X11-unix:/tmp/.X11-unix \
         --volume=/run/user/${USER_UID}/pulse:/run/pulse \
@@ -34,10 +37,11 @@ dxmonad_up() {
 
 
 if [ "$1" == "test" ]; then
-    docker kill dxmonad-test
-    docker rm   dxmonad-test
+    docker kill dxmonad-test #> /dev/null 2>&1
+    docker rm   dxmonad-test #> /dev/null 2>&1
     echo "Bring up dxmonad-test"
     dxmonad_up  dxmonad-test "xmonad --recompile"
+    #dxmonad_up  dxmonad-test "xmonad --recompile" "--rm"
     echo "done recompiling"
 else
     docker kill dxmonad
