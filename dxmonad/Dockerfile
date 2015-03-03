@@ -60,6 +60,13 @@ RUN chmod 777 /home/dev/.xmonad/xmonad.hs
 # ensure xmonad.hs can compile
 RUN xmonad --recompile
 
+#get intellij idea
+RUN mkdir /home/dev/idea && \
+  curl http://download-cf.jetbrains.com/idea/ideaIU-14.0.3.tar.gz \
+    | tar xz -C /home/dev/idea --strip-components=1
+ENV PATH /home/dev/idea/bin:$PATH
+
+
 #grant ownership of /home/dev to dev. run after all modifications to same
 RUN chown -R dev: /home/dev
 
