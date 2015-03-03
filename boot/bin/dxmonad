@@ -15,7 +15,14 @@ USER_GID=$(id -g)
 #echo "starting dockerui"
 #dockerui
 
+echo "starting redis"
+# can fail if docker is already running
+# todo: write some q+d python script to startup dxmonad
+docker run --name redis -d redis:2.8
 
+# todo: need to ensure all these directories exist, else
+# they will be created w/ root as owner
+# todo: can I run docker daemon as non-root
 dxmonad_up() {
     NAME=$1
     RUNWITH=$2
@@ -24,8 +31,11 @@ dxmonad_up() {
         --env USER_UID=${USER_UID} \
         --env USER_GID=${USER_GID} \
         --env DISPLAY=${DISPLAY} \
-        --volume=/home/paul/maersk:/maersk \
+        --link redis:redis \
+        --volume=/home/paul/.sbt:/home/dev/.sbt \
+        --volume=/home/paul/.ivy2:/home/dev/.ivy2 \
         --volume=/home/paul/.mozilla:/home/dev/.mozilla \
+        --volume=/home/paul/.IntelliJIdea14:/home/dev/.IntelliJIdea14 \
         --volume=/home/paul/.ssh:/home/dev/.ssh \
         --volume=/home/paul/dxmonad:/home/dev/dxmonad \
         --volume=/home/paul/work:/home/dev/work \
@@ -37,11 +47,10 @@ dxmonad_up() {
 
 
 if [ "$1" == "test" ]; then
-    docker kill dxmonad-test #> /dev/null 2>&1
-    docker rm   dxmonad-test #> /dev/null 2>&1
+    docker kill dxmonad-test
+    docker rm   dxmonad-test
     echo "Bring up dxmonad-test"
     dxmonad_up  dxmonad-test "xmonad --recompile"
-    #dxmonad_up  dxmonad-test "xmonad --recompile" "--rm"
     echo "done recompiling"
 else
     docker kill dxmonad

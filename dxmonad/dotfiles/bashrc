@@ -115,7 +115,7 @@ fi
 
 # pkinsky-added after this line
 alias anchor='ssh paul@172.17.42.1'
-alias dx-recompile='ssh pkinsky@172.17.42.1 dxmonad test'
+alias dx-recompile='ssh paul@172.17.42.1 dxmonad test'
 
 alias d='docker'
 alias vim='gvim'
