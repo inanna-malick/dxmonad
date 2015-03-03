@@ -67,8 +67,12 @@ RUN mkdir /home/dev/idea && \
 ENV PATH /home/dev/idea/bin:$PATH
 
 
+RUN curl -s https://raw.githubusercontent.com/paulp/sbt-extras/master/sbt > ~/bin/sbt \
+  && chmod 0755 ~/bin/sbt
+
 #grant ownership of /home/dev to dev. run after all modifications to same
 RUN chown -R dev: /home/dev
+
 
 USER dev
 CMD ["/start"]
