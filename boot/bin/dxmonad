@@ -20,9 +20,12 @@ echo "starting redis"
 # todo: write some q+d python script to startup dxmonad
 docker run --name redis -d redis:2.8
 
+echo "starting postgres"
+docker run --name postgres -d postgres:9.4
+
 # todo: need to ensure all these directories exist, else
 # they will be created w/ root as owner
-# todo: can I run docker daemon as non-root
+# todo: just bite the bullet and use python
 dxmonad_up() {
     NAME=$1
     RUNWITH=$2
@@ -32,6 +35,7 @@ dxmonad_up() {
         --env USER_GID=${USER_GID} \
         --env DISPLAY=${DISPLAY} \
         --link redis:redis \
+        --link postgres:postgres \
         --volume=/home/paul/.sbt:/home/dev/.sbt \
         --volume=/home/paul/.ivy2:/home/dev/.ivy2 \
         --volume=/home/paul/.mozilla:/home/dev/.mozilla \

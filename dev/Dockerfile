@@ -26,4 +26,38 @@ ENV PATH /home/dev/bin:$PATH
 # todo: put all the vim shit somewhere shared
 RUN curl https://j.mp/spf13-vim3 -L > spf13-vim.sh && sh spf13-vim.sh
 
+
+RUN apt-get -y install haskell-platform golang 
+
+# go stuff
+RUN mkdir -p /home/dev/go /home/dev/lib /home/dev/include
+ENV PATH /home/dev/bin:$PATH
+ENV PKG_CONFIG_PATH /home/dev/lib/pkgconfig
+ENV LD_LIBRARY_PATH /home/dev/lib
+ENV GOPATH /home/dev/go:$GOPATH
+ENV PATH /home/dev/go/bin:$PATH
+
+# install go utils 
+RUN go get github.com/Soulou/curl-unix-socket 
+
+
+RUN apt-get -y install postgresql
+
+# get sbt
+RUN curl -s https://raw.githubusercontent.com/paulp/sbt-extras/master/sbt > ~/bin/sbt \
+  && chmod 0755 /home/dev/bin/sbt
+
+#update cabal-install
+RUN cabal update
+RUN git clone git://github.com/haskell/cabal.git /home/dev/cabal-install && \
+  cd /home/dev/cabal-install && \
+  cabal install Cabal/ cabal-install/
+ENV PATH /home/dev/.cabal/bin:$PATH
+
+# used by spf13 haskell plugin
+RUN cabal install ghc-mod
+RUN ln -s /home/dev/.cabal/bin/ghc-mod /home/dev/.cabal/bin/ghcmod
+
+RUN cabal install io-streams
+
 RUN chown -R dev: /home/dev
