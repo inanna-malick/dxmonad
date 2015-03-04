@@ -9,23 +9,20 @@ PATH=/usr/sbin:/usr/bin:/sbin:/bin:/usr/local/bin
 USER_UID=$(id -u)
 USER_GID=$(id -g)
 
-#echo "starting dx-mysql"
-#dx-mysql
+function require {
+  IMAGE=$1
+  NAME=$2
+  docker start $NAME \
+    || docker run -d --name $NAME $IMAGE \
+    || true
+}
 
-#echo "starting dockerui"
-#dockerui
-
-echo "starting redis"
-# can fail if docker is already running
-# todo: write some q+d python script to startup dxmonad
-docker run --name redis -d redis:2.8
-
-echo "starting postgres"
-docker run --name postgres -d postgres:9.4
+require "postgres:9.4" "postgres"
+require "redis:2.8"    "redis"
 
 # todo: need to ensure all these directories exist, else
 # they will be created w/ root as owner
-# todo: just bite the bullet and use python
+# todo: simple bash loop
 dxmonad_up() {
     NAME=$1
     RUNWITH=$2

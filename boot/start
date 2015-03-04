@@ -14,8 +14,6 @@ case "$1" in
     install -m 0755 /resources/bin/dxmonad /target/bin/
     echo "5. copy dockerui to /usr/local/bin/"
     install -m 0755 /resources/bin/dockerui /target/bin/
-    echo "6. copy dx-mysql to /usr/local/bin/"
-    install -m 0755 /resources/bin/dx-mysql /target/bin/
     ;;
   uninstall)
     # todo
