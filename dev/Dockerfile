@@ -19,6 +19,9 @@ ENV HOME /home/dev
 #ENV vars
 ENV LANG en_US.UTF-8
 ENV LANGUAGE en_US.UTF-8
+RUN locale-gen en_US.UTF-8 && update-locale
+
+
 ENV PATH /home/dev/bin:$PATH
 
 
