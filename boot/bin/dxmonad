@@ -17,6 +17,7 @@ function require {
     || true
 }
 
+# these are no longer linked by dxmonad, but they should still be up
 require "postgres:9.4" "postgres"
 require "redis:2.8"    "redis"
 
@@ -31,8 +32,6 @@ dxmonad_up() {
         --env USER_UID=${USER_UID} \
         --env USER_GID=${USER_GID} \
         --env DISPLAY=${DISPLAY} \
-        --link redis:redis \
-        --link postgres:postgres \
         --volume=/home/paul/.sbt:/home/dev/.sbt \
         --volume=/home/paul/.ivy2:/home/dev/.ivy2 \
         --volume=/home/paul/.mozilla:/home/dev/.mozilla \

@@ -41,7 +41,7 @@ ENV PATH /home/dev/go/bin:$PATH
 RUN go get github.com/Soulou/curl-unix-socket 
 
 
-RUN apt-get -y install postgresql
+RUN apt-get -y install postgresql vim-gnome
 
 # get sbt
 RUN curl -s https://raw.githubusercontent.com/paulp/sbt-extras/master/sbt > ~/bin/sbt \
@@ -59,5 +59,14 @@ RUN cabal install ghc-mod
 RUN ln -s /home/dev/.cabal/bin/ghc-mod /home/dev/.cabal/bin/ghcmod
 
 RUN cabal install io-streams
+
+#add a bunch of dotfiles
+ADD dotfiles/bashrc /home/dev/.bashrc
+ADD dotfiles/gitconfig /home/dev/.gitconfig
+ADD dotfiles/Xresources /home/dev/.Xresources
+
+ADD bin /home/dev/bin
+ENV PATH /home/dev/idea/bin:$PATH
+
 
 RUN chown -R dev: /home/dev

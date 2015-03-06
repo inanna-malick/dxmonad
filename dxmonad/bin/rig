@@ -1,7 +1,0 @@
-docker run -it --rm \
-  -e DISPLAY \
-  --volumes-from=dxmonad \
-  --volume=/var/run/docker.sock:/var/run/docker.sock \
-  --volume=/tmp/.X11-unix:/tmp/.X11-unix \
-  pkinsky/rig
-

@@ -8,6 +8,8 @@ FROM postgres:9.4
 #of the data directory, but not for the location of the configuration files.
 
 ADD postgresql.conf /postgresql.conf
+RUN chown postgres:postgres /postgresql.conf
+RUN chmod 700 /postgresql.conf
 
 #RUN mkdir /docker-entrypoint-initdb.d
 ADD shim.sh /docker-entrypoint-initdb.d/shim.sh

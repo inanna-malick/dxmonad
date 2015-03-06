@@ -4,7 +4,7 @@ RUN apt-get -y install firefox xz-utils file locales dbus-x11 \
       pulseaudio dmz-cursor-theme fonts-dejavu fonts-liberation \
       hicolor-icon-theme libcanberra-gtk3-0 libcanberra-gtk-module \
       libcanberra-gtk3-module libasound2 libgtk2.0-0 libdbus-glib-1-2 \
-      libxt6 libexif12 libgl1-mesa-glx libgl1-mesa-dri vim-gnome \
+      libxt6 libexif12 libgl1-mesa-glx libgl1-mesa-dri \
       xterm
 
 #install xmonad utils
@@ -20,18 +20,11 @@ ENV PULSE_SERVER /run/pulse/native
 RUN mkdir /home/dev/idea && \
   curl http://download-cf.jetbrains.com/idea/ideaIU-14.0.3.tar.gz \
     | tar xz -C /home/dev/idea --strip-components=1
-ENV PATH /home/dev/idea/bin:$PATH
 
 
 #add start script entrypoint
 ADD start /start
 RUN chmod 755 /start
-
-#add a bunch of dotfiles
-ADD dotfiles/bashrc /home/dev/.bashrc
-ADD dotfiles/gitconfig /home/dev/.gitconfig
-ADD dotfiles/Xresources /home/dev/.Xresources
-ADD bin /home/dev/bin
 
 ADD xmonad /home/dev/.xmonad
 RUN chmod 777 /home/dev/.xmonad/xmonad.hs
