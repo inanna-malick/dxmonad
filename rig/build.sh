@@ -10,8 +10,8 @@ done
 DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
 
 
-cp -r $DIR/../dotfiles .
-cp -r $DIR/../bin .
+cp -r $DIR/../dotfiles $DIR/dotfiles
+cp -r $DIR/../bin $DIR/bin
 docker build -t pkinsky/rig $DIR
 rm -r $DIR/dotfiles
 rm -r $DIR/bin

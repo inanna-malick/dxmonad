@@ -1,3 +1,5 @@
+#!/bin/bash
+set -e
 
 SOURCE=$0
 while [ -h "$SOURCE" ]; do # resolve $SOURCE until the file is no longer a symlink
@@ -7,8 +9,8 @@ while [ -h "$SOURCE" ]; do # resolve $SOURCE until the file is no longer a symli
 done
 DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
 
-cp -r $DIR/../dotfiles .
-cp -r $DIR/../bin .
+cp -r $DIR/../dotfiles $DIR/dotfiles
+cp -r $DIR/../bin $DIR/bin
 docker build -t pkinsky/dxmonad $DIR
 rm -r $DIR/dotfiles
 rm -r $DIR/bin

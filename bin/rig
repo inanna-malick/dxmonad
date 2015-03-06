@@ -1,4 +1,6 @@
 #!/bin/bash
+set -e
+
 # LOCAL_NAME as in the name of unnamed docker containers
 docker run \
     --link postgres:postgres --link redis:redis \

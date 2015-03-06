@@ -33,6 +33,7 @@ dxmonad_up() {
         --env USER_GID=${USER_GID} \
         --env DISPLAY=${DISPLAY} \
         --env BOX_NAME=${NAME} \
+        --volume=/home/paul/.dbus:/home/dev/.dbus \
         --volume=/home/paul/.sbt:/home/dev/.sbt \
         --volume=/home/paul/.ivy2:/home/dev/.ivy2 \
         --volume=/home/paul/.mozilla:/home/dev/.mozilla \

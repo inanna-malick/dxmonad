@@ -118,7 +118,9 @@ alias anchor='ssh paul@172.17.42.1'
 alias dx-recompile='ssh paul@172.17.42.1 dxmonad test'
 
 alias d='docker'
-alias vim='gvim'
+alias dps='docker ps'
+alias ddiff='docker diff'
+alias vim='gvim 2>/dev/null'
 
 
 
