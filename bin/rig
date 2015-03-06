@@ -1,0 +1,7 @@
+#!/bin/bash
+# LOCAL_NAME as in the name of unnamed docker containers
+docker run \
+    --link postgres:postgres --link redis:redis \
+    --volumes-from dxmonad -e LOCAL_NAME=rig -it --rm \
+    --env DISPLAY=${DISPLAY} \
+    pkinsky/rig

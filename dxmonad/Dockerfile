@@ -32,9 +32,15 @@ RUN chmod 777 /home/dev/.xmonad/xmonad.hs
 RUN xmonad --recompile
 
 
-#grant ownership of /home/dev to dev. run after all modifications to same
-RUN chown -R dev /home/dev
+#add a bunch of dotfiles
+ADD dotfiles/bashrc /home/dev/.bashrc
+ADD dotfiles/gitconfig /home/dev/.gitconfig
+ADD dotfiles/Xresources /home/dev/.Xresources
 
+ADD bin /home/dev/bin
+ENV PATH /home/dev/idea/bin:$PATH
+
+RUN chown -R dev: /home/dev
 
 USER dev
 CMD ["/start"]

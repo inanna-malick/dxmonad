@@ -1,3 +1,0 @@
-#!/bin/bash
-
-docker run --link postgres:postgres --link redis:redis --volumes-from dxmonad -it --rm pkinsky/rig

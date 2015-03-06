@@ -119,3 +119,49 @@ alias dx-recompile='ssh paul@172.17.42.1 dxmonad test'
 
 alias d='docker'
 alias vim='gvim'
+
+
+
+# much of the following from http://serverfault.com/questions/3743/what-useful-things-can-one-add-to-ones-bashrc
+# This is GOLD for finding out what is taking so much space on your drives!
+alias diskspace="du -S | sort -n -r |more"
+
+# Show me the size (sorted) of only the folders in this directory
+alias folders="find . -maxdepth 1 -type d -print | xargs du -sk | sort -rn"
+
+extract () {
+   if [ -f $1 ] ; then
+       case $1 in
+           *.tar.bz2)   tar xvjf $1    ;;
+           *.tar.gz)    tar xvzf $1    ;;
+           *.bz2)       bunzip2 $1     ;;
+           *.rar)       unrar x $1       ;;
+           *.gz)        gunzip $1      ;;
+           *.tar)       tar xvf $1     ;;
+           *.tbz2)      tar xvjf $1    ;;
+           *.tgz)       tar xvzf $1    ;;
+           *.zip)       unzip $1       ;;
+           *.Z)         uncompress $1  ;;
+           *.7z)        7z x $1        ;;
+           *)           echo "don't know how to extract '$1'..." ;;
+       esac
+   else
+       echo "'$1' is not a valid file!"
+   fi
+ }
+
+
+# my stuff again: set prompt based on box or local name
+if [[ $BOX_NAME ]]; then
+    PS1=$BOX_NAME\>
+elif [[ $LOCAL_NAME ]]; then
+    PS1=$LOCAL_NAME\>
+fi
+
+#This is my favourite. Causes bash to append to history instead of overwriting it. Typically when you launch bash, it loads history into memory, and when you close it it writes it out. This means that if you load two shells, use both, then close both, the one you closed last overwrites all changes.
+#This snippet causes it to first of all only append changes (instead of overwriting with the whole buffer), and then to cause it to, after every command, write out changes. In effect, you get a live updating .bash_history, so if you start a new terminal, you have all the commands from your other running sessions' history.
+shopt -s histappend
+PROMPT_COMMAND='history -a'
+
+# Have bash check to see if the window size has changed (prevents line-editing from going weird if you resize your terminal window)
+shopt -s checkwinsize
