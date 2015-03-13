@@ -167,3 +167,13 @@ PROMPT_COMMAND='history -a'
 
 # Have bash check to see if the window size has changed (prevents line-editing from going weird if you resize your terminal window)
 shopt -s checkwinsize
+
+
+
+
+# fixes dbus weirdness
+eval $(dbus-launch --sh-syntax )
+
+
+xrdb -merge .Xresources
+
