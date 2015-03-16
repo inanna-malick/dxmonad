@@ -1,63 +1,41 @@
-#!/bin/bash
-#set -e
+#!/usr/bin/env python
+import os
+from subprocess import call
 
 
-# todo: read home dir instead of hardcoding
+def ensure_dir(f):
+    if not os.path.exists(f):
+        os.makedirs(f)
 
+if __name__ == "__main__":
+    # directories located in both the host and dxmonad home dir
+    shared_volumes = ['.dbus', '.sbt', '.ivy2', '.mozilla', '.IntelliJIdea14', '.ssh', 'dxmonad', 'work']
+    host_home = os.environ['HOME']
+    dxmonad_home = '/home/dev'
 
-PATH=/usr/sbin:/usr/bin:/sbin:/bin:/usr/local/bin
+    for f in shared_volumes:
+        ensure_dir(host_home + "/" + f)
 
-USER_UID=$(id -u)
-USER_GID=$(id -g)
+    image = "pkinsky/dxmonad:latest"
 
-function require {
-  IMAGE=$1
-  NAME=$2
-  docker start $NAME \
-    || docker run -d --name $NAME $IMAGE \
-    || true
-}
+    dxmonad_name = 'dxmonad'
+    shared_env = ['USER_UID', 'USER_GID', 'DISPLAY', 'BOX_NAME']
 
-# these are no longer linked by dxmonad, but they should still be up
-require "postgres:9.4" "postgres"
-require "redis:2.8"    "redis"
+    docker_opts = ["--name=" + dxmonad_name]
 
-# todo: need to ensure all these directories exist, else
-# they will be created w/ root as owner
-# todo: simple bash loop
-dxmonad_up() {
-    NAME=$1
-    RUNWITH=$2
-    docker run \
-        --name $NAME \
-        --env USER_UID \
-        --env USER_GID \
-        --env DISPLAY \
-        --env BOX_NAME \
-        --volume="$HOME/.dbus:/home/dev/.dbus" \
-        --volume="$HOME/.sbt:/home/dev/.sbt" \
-        --volume="$HOME/.ivy2:/home/dev/.ivy2" \
-        --volume="$HOME/.mozilla:/home/dev/.mozilla" \
-        --volume="$HOME/.IntelliJIdea14:/home/dev/.IntelliJIdea14" \
-        --volume="$HOME/.ssh:/home/dev/.ssh" \
-        --volume="$HOME/dxmonad:/home/dev/dxmonad" \
-        --volume="$HOME/work:/home/dev/work" \
-        --volume=/var/run/docker.sock:/var/run/docker.sock \
-        --volume=/tmp/.X11-unix:/tmp/.X11-unix \
-        --volume=/run/user/${USER_UID}/pulse:/run/pulse \
-        pkinsky/dxmonad:latest $RUNWITH
-}
+    docker_opts.extend(map(lambda s: "--env=" + s, shared_env))
+    docker_opts.extend(map(lambda s: "--volume=" + host_home + "/" + s + ":" + dxmonad_home + "/" + s, shared_volumes))
 
+    docker_opts.append("--volume=/var/run/docker.sock:/var/run/docker.sock")
+    docker_opts.append("--volume=/tmp/.X11-unix:/tmp/.X11-unix")
+    #user_uid = os.environ['USER_UID']
+    #docker_opts.append("--volume=/run/user/" + user_uid +"/pulse:/run/pulse")
 
-if [ "$1" == "test" ]; then
-    docker kill dxmonad-test
-    docker rm   dxmonad-test
-    echo "Bring up dxmonad-test"
-    dxmonad_up  dxmonad-test "xmonad --recompile"
-    echo "done recompiling"
-else
-    docker kill dxmonad
-    docker rm   dxmonad
-    echo "Starting dxmonad..."
-    dxmonad_up  dxmonad
-fi
+    docker_opts.append(image)
+
+    docker_cmd = ["docker", "run"] + docker_opts
+
+    call(["docker", "kill", dxmonad_name])
+    call(["docker", "rm", dxmonad_name])
+    call(docker_cmd)
+
