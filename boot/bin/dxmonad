@@ -4,6 +4,7 @@
 
 # todo: read home dir instead of hardcoding
 
+
 PATH=/usr/sbin:/usr/bin:/sbin:/bin:/usr/local/bin
 
 USER_UID=$(id -u)
@@ -29,18 +30,18 @@ dxmonad_up() {
     RUNWITH=$2
     docker run \
         --name $NAME \
-        --env USER_UID=${USER_UID} \
-        --env USER_GID=${USER_GID} \
-        --env DISPLAY=${DISPLAY} \
-        --env BOX_NAME=${NAME} \
-        --volume=/home/paul/.dbus:/home/dev/.dbus \
-        --volume=/home/paul/.sbt:/home/dev/.sbt \
-        --volume=/home/paul/.ivy2:/home/dev/.ivy2 \
-        --volume=/home/paul/.mozilla:/home/dev/.mozilla \
-        --volume=/home/paul/.IntelliJIdea14:/home/dev/.IntelliJIdea14 \
-        --volume=/home/paul/.ssh:/home/dev/.ssh \
-        --volume=/home/paul/dxmonad:/home/dev/dxmonad \
-        --volume=/home/paul/work:/home/dev/work \
+        --env USER_UID \
+        --env USER_GID \
+        --env DISPLAY \
+        --env BOX_NAME \
+        --volume="$HOME/.dbus:/home/dev/.dbus" \
+        --volume="$HOME/.sbt:/home/dev/.sbt" \
+        --volume="$HOME/.ivy2:/home/dev/.ivy2" \
+        --volume="$HOME/.mozilla:/home/dev/.mozilla" \
+        --volume="$HOME/.IntelliJIdea14:/home/dev/.IntelliJIdea14" \
+        --volume="$HOME/.ssh:/home/dev/.ssh" \
+        --volume="$HOME/dxmonad:/home/dev/dxmonad" \
+        --volume="$HOME/work:/home/dev/work" \
         --volume=/var/run/docker.sock:/var/run/docker.sock \
         --volume=/tmp/.X11-unix:/tmp/.X11-unix \
         --volume=/run/user/${USER_UID}/pulse:/run/pulse \
