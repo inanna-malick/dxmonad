@@ -42,5 +42,7 @@ ENV PATH /home/dev/idea/bin:$PATH
 
 RUN chown -R dev: /home/dev
 
+RUN usermod -aG docker dev
+
 USER dev
 CMD ["/start"]
