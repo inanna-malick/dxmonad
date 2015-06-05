@@ -1,0 +1,9 @@
+no-resolv
+server=8.8.4.4
+server=8.8.8.8
+interface=eth0
+no-dhcp-interface=eth0
+no-hosts
+addn-hosts=/docker-container-hosts
+log-queries
+log-dhcp

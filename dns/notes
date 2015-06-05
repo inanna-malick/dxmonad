@@ -1,0 +1,1 @@
+for now, dnsmasq will run on host machine. hopefully I will eventually understand it enough to either dockerize it or explain the impossibility of same
